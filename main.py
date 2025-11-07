@@ -53,16 +53,21 @@ def square_from_rectan(
     return (A_new, b_new)
 
 def residual_norm(A: np.ndarray, x: np.ndarray, b: np.ndarray) -> float | None:
-    """Funkcja obliczająca normę residuum dla równania postaci:
-    Ax = b
+    if not isinstance(A, np.ndarray) or not isinstance(x, np.ndarray) or not isinstance(b, np.ndarray):
+        return None
+    
+    if A.ndim != 2 or x.ndim != 1 or b.ndim != 1:
+        return None
+    if A.shape[1] != x.shape[0]:
+        return None
+    if A.shape[0] != b.shape[0]:
+        return None
 
-    Args:
-        A (np.ndarray): Macierz A (m,n) zawierająca współczynniki równania.
-        x (np.ndarray): Wektor x (n,) zawierający rozwiązania równania.
-        b (np.ndarray): Wektor b (m,) zawierający współczynniki po prawej stronie równania.
-
-    Returns:
-        (float): Wartość normy residuum dla podanych parametrów.
-        Jeżeli dane wejściowe są niepoprawne funkcja zwraca `None`.
-    """
+    Ax = np.dot(A, x)
+    
+    residuum = b - Ax
+    
+    norma = np.linalg.norm(residuum)
+    
+    return norma
     pass
